@@ -3,6 +3,7 @@ import delve from 'dlv';
 import { moduleDir, tryRequire, dedupe, cleanStack, readFile, readDir } from './lib/util';
 import babelLoader from './lib/babel-loader';
 import cssLoader from './lib/css-loader';
+import webpack from 'webpack';
 
 export default function configure(options) {
 	let cwd = process.cwd(),
@@ -165,7 +166,13 @@ export default function configure(options) {
 			plugins: (webpackConfig.plugins || []).filter( plugin => {
 				let name = plugin && plugin.constructor.name;
 				return /^\s*(UglifyJS|HTML|ExtractText|BabelMinify)(.*Webpack)?Plugin\s*$/gi.test(name);
-			})
+			}).concat([
+				new webpack.ProvidePlugin({
+					electronRequire: 'karmatic-nightmare/dist/electronRequire.js',
+					'window.electronRequire': 'karmatic-nightmare/dist/electronRequire.js',
+					'global.electronRequire': 'karmatic-nightmare/dist/electronRequire.js'
+				})
+			])
 		},
 
 		webpackMiddleware: {
