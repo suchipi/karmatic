@@ -1,27 +1,25 @@
 {
-  "name": "karmatic",
-  "version": "1.0.6",
-  "description": "Zero-config automatic (headless) browser testing. Powered by Karma, Webpack & Jasmine.",
+  "name": "karmatic-nightmare",
+  "version": "1.0.0",
+  "description": "Fork of karmatic using Nightmare instead of puppeteer",
   "main": "dist/index.js",
   "module": "dist/index.m.js",
   "bin": "dist/cli.js",
   "scripts": {
     "prepare": "npm t",
-    "build": "microbundle --target node --external all -f cjs --no-compress src/*.js",
+    "build":
+      "microbundle --target node --external all -f cjs --no-compress src/*.js",
     "test:build": "node ./dist/cli.js run",
     "test": "eslint src test && npm run -s build && npm run -s test:build",
-    "release": "npm run -s prepare && npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish"
+    "release":
+      "npm run -s prepare && npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish"
   },
   "eslintConfig": {
     "extends": "eslint-config-developit"
   },
-  "keywords": [
-    "karma",
-    "chrome",
-    "test runner"
-  ],
-  "author": "Jason Miller <jason@developit.ca> (http://jasonformat.com)",
-  "repository": "developit/karmatic",
+  "keywords": ["karma", "chrome", "test runner"],
+  "author": "Suchipi <me@suchipi.com>",
+  "repository": "suchipi/karmatic-nightmare",
   "license": "MIT",
   "devDependencies": {
     "eslint": "^4.16.0",
