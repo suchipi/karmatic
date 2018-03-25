@@ -175,6 +175,11 @@ export default function configure(options) {
 			])
 		},
 
+		nightmareOptions: {
+			show: options['dev-tools'] || !options.headless,
+			openDevTools: options['dev-tools']
+		},
+
 		webpackMiddleware: {
 			noInfo: true
 		},

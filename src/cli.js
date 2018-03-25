@@ -14,7 +14,9 @@ let prog = sade('karmatic-nightmare');
 
 prog
 	.version(version)
-	.option('--files', 'Minimatch pattern for test files');
+	.option('--files', 'Minimatch pattern for test files')
+	.option('--headless', 'Hide Electron window', true)
+	.option('--dev-tools', 'Open dev tools on launch', false);
 
 prog
 	.command('run [...files]', '', { default: true })

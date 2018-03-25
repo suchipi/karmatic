@@ -6,5 +6,5 @@ Options and usage more-or-less match karmatic; see its repo for more info.
 
 ## Differences from Karmatic
 * Uses Nightmare instead of Puppeteer (runs in Electron instead of Chrome)
-* Headless option is not supported
 * You can use `electronRequire` in your tests to require using electron (normal `require`s are compiled using Webpack)
+* You can use the `--dev-tools` CLI option to open Electron's Dev Tools UI
