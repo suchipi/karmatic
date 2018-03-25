@@ -1,5 +1,4 @@
 import path from 'path';
-import puppeteer from 'puppeteer';
 import delve from 'dlv';
 import { moduleDir, tryRequire, dedupe, cleanStack, readFile, readDir } from './lib/util';
 import babelLoader from './lib/babel-loader';
@@ -12,14 +11,12 @@ export default function configure(options) {
 	let files = options.files.filter(Boolean);
 	if (!files.length) files = ['**/{*.test.js,*_test.js}'];
 
-	process.env.CHROME_BIN = puppeteer.executablePath();
-
 	let gitignore = (readFile(path.resolve(cwd, '.gitignore'), 'utf8') || '').replace(/(^\s*|\s*$|#.*$)/g, '').split('\n').filter(Boolean);
 	let repoRoot = (readDir(cwd) || []).filter( c => c[0]!=='.' && c!=='node_modules' && gitignore.indexOf(c)===-1 );
 	let rootFiles = '{' + repoRoot.join(',') + '}';
 
 	const PLUGINS = [
-		'karma-chrome-launcher',
+		'karma-nightmare',
 		'karma-jasmine',
 		'karma-spec-reporter',
 		'karma-sourcemap-loader',
@@ -104,17 +101,7 @@ export default function configure(options) {
 		plugins: PLUGINS.map(require.resolve),
 		frameworks: ['jasmine'],
 		reporters: ['spec'],
-		browsers: [options.headless===false ? 'KarmaticChrome' : 'KarmaticChromeHeadless'],
-
-		customLaunchers: {
-			KarmaticChrome: {
-				base: 'Chrome'
-			},
-			KarmaticChromeHeadless: {
-				base: 'ChromeHeadless',
-				flags: ['--no-sandbox']
-			}
-		},
+		browsers: ['Nightmare'],
 
 		formatError(msg) {
 			try {

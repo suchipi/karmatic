@@ -23,4 +23,9 @@ describe('demo', () => {
 		let mod = lib();
 		expect(await mod.foo()).toEqual(1);
 	});
+
+	it('should support node require', () => {
+		const Module = eval('require')('module');
+		expect(Array.isArray(Module.globalPaths)).toBe(true);
+	});
 });
