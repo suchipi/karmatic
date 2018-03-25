@@ -10,12 +10,11 @@ const { version } = require('../package.json');
 
 let toArray = val => Array.isArray(val) ? val : val == null ? [] : [val];
 
-let prog = sade('karmatic');
+let prog = sade('karmatic-nightmare');
 
 prog
 	.version(version)
-	.option('--files', 'Minimatch pattern for test files')
-	.option('--headless', 'Run using Chrome Headless', true);
+	.option('--files', 'Minimatch pattern for test files');
 
 prog
 	.command('run [...files]', '', { default: true })
