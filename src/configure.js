@@ -136,15 +136,17 @@ export default function configure(options) {
 
     files: [
       {
-        pattern: moduleDir("babel-polyfill") + "/dist/polyfill.js",
+        pattern: path.join(moduleDir("babel-polyfill"), "dist", "polyfill.js"),
         watched: false,
         included: true,
         served: true
       },
       {
-        pattern: require
-          .resolve("karmatic-nightmare")
-          .replace(/\/index.js$/, "/preload.js"),
+        pattern: path.join(
+          moduleDir("karmatic-nightmare"),
+          "dist",
+          "preload.js"
+        ),
         watched: false,
         included: true,
         served: true

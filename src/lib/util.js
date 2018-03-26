@@ -1,12 +1,12 @@
 import fs from "fs";
 import path from "path";
 import chalk from "chalk";
+import findUp from "find-up";
 
 export function moduleDir(name) {
-  let file = require.resolve(name),
-    find = `${path.sep}node_modules${path.sep}${name}`,
-    index = file.indexOf(find);
-  return file.substring(0, index + find.length);
+  const mainFile = require.resolve(name);
+  const pkgJson = findUp.sync("package.json", { cwd: path.dirname(mainFile) });
+  return path.dirname(pkgJson);
 }
 
 export function fileExists(file) {

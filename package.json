@@ -52,6 +52,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "chalk": "^2.3.0",
     "dlv": "^1.1.1",
+    "find-up": "^2.1.0",
     "jasmine-core": "^2.9.1",
     "karma": "^2.0.0",
     "karma-jasmine": "^1.1.1",
