@@ -69,3 +69,15 @@ describe("demo", () => {
     });
   });
 });
+
+test("can do test", () => {
+  // passes
+});
+
+xdescribe("skipped suite", () => {
+  it("is skipped", () => {
+    throw new Error("abcd");
+  });
+});
+
+xit("skipped spec", () => {});

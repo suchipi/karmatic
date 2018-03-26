@@ -652,6 +652,13 @@ const electron = makeModuleEnv(
 [window, window.parent].filter(Boolean).forEach(win => {
   Object.assign(win, {
     electron,
-    expect
+    expect,
+    test: win.it
   });
+
+  const originalOnError = win.onerror;
+  win.onerror = function(error) {
+    console.error(error); // To get it to the reporter
+    originalOnError.call(this, error);
+  };
 });
