@@ -87,7 +87,7 @@ export function cleanStack(str, cwd = process.cwd()) {
       }
     }
   }
-  return chalk.red(clean);
+  return clean;
 }
 
 function replacer(str, before, root, filename, position) {
