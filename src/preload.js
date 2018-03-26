@@ -641,6 +641,41 @@ const requireNonBuiltin = source =>
 
 const makeModuleEnv = requireNonBuiltin("make-module-env");
 const expect = requireNonBuiltin("expect");
+const sourceMapSupport = requireNonBuiltin("source-map-support");
+
+sourceMapSupport.install({
+  retrieveSourceMap: function(source) {
+    if (!source.startsWith("http")) {
+      return null;
+    }
+
+    if (source.match(/base\/node_modules/)) {
+      return null;
+    }
+
+    let content;
+    try {
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", source, false);
+      xhr.send(null);
+
+      content = xhr.responseText;
+    } catch (err) {
+      return null;
+    }
+
+    const matches = content.match(/# sourceMappingURL=[^,]+,(.+)/i);
+    if (matches) {
+      try {
+        return {
+          map: JSON.parse(atob(matches[1]))
+        };
+      } catch (err) {
+        return null;
+      }
+    }
+  }
+});
 
 const electron = makeModuleEnv(
   path.join(

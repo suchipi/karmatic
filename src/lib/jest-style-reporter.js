@@ -53,7 +53,14 @@ function formatError(message) {
       }
 
       // Remove karma URLs from stack traces.
-      output = output.replace(/(at .* \()http:\/\/localhost:\d+\/base\//, "$1");
+      output = output.replace(
+        /(at .* \()http:\/\/localhost:\d+\/base\/([^?]+)\?[^)]+(\))/g,
+        "$1$2$3"
+      );
+      output = output.replace(/(at .* \()webpack:\/\/\//g, "$1");
+
+      // Make file locations blue
+      output = output.replace(/(at .* \()([^)]+)/g, "$1" + chalk.blue("$2"));
 
       return output;
     })
