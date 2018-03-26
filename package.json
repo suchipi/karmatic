@@ -3,10 +3,9 @@
   "version": "2.0.0",
   "description": "Fork of karmatic using Nightmare instead of Puppeteer",
   "main": "dist/index.js",
-  "module": "dist/index.m.js",
   "bin": "dist/cli.js",
   "scripts": {
-    "build": "microbundle --target node --external all -f cjs --no-compress src/*.js",
+    "build": "rm -rf dist/*; babel src --presets env --plugins transform-runtime --ignore src/preload.js --out-dir dist; cp src/preload.js dist/preload.js",
     "test:build": "node ./dist/cli.js run --test-setup-script ./test/test-setup.js",
     "test": "npm run -s build && npm run -s test:build",
     "release": "npm run -s prepare && npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish"
@@ -33,11 +32,12 @@
   "repository": "suchipi/karmatic-nightmare",
   "license": "MIT",
   "devDependencies": {
+    "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.2",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "eslint": "^4.16.0",
     "eslint-config-unobtrusive": "^1.2.2",
     "eslint-plugin-import": "^2.9.0",
-    "microbundle": "^0.4.3",
     "prettier": "^1.11.1",
     "workerize-loader": "^1.0.1"
   },
@@ -50,6 +50,7 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-stage-0": "^6.24.1",
+    "babel-runtime": "^6.26.0",
     "chalk": "^2.3.0",
     "dlv": "^1.1.1",
     "expect": "^22.4.3",
