@@ -159,12 +159,12 @@ export default function configure(options) {
       ),
 
     preprocessors: {
-      [rootFiles + "/**/*"]: ["webpack"],
-      [rootFiles]: ["webpack"]
+      [rootFiles + "/**/*"]: ["webpack", "sourcemap"],
+      [rootFiles]: ["webpack", "sourcemap"]
     },
 
     webpack: {
-      devtool: "cheap-module-eval-source-map",
+      devtool: "inline-source-map",
       module: {
         loaders: loaders
           .concat(
