@@ -1,13 +1,6 @@
 import path from "path";
 import delve from "dlv";
-import {
-  moduleDir,
-  tryRequire,
-  dedupe,
-  cleanStack,
-  readFile,
-  readDir
-} from "./lib/util";
+import { moduleDir, tryRequire, dedupe, readFile, readDir } from "./lib/util";
 import babelLoader from "./lib/babel-loader";
 import cssLoader from "./lib/css-loader";
 
@@ -118,20 +111,7 @@ export default function configure(options) {
     reporters: ["spec"],
     browsers: ["Nightmare"],
 
-    formatError(msg) {
-      try {
-        msg = JSON.parse(msg).message;
-      } catch (e) {}
-      return cleanStack(msg);
-    },
-
     logLevel: "ERROR",
-
-    loggers: [
-      {
-        type: path.resolve(__dirname, "appender.js")
-      }
-    ],
 
     files: [
       {

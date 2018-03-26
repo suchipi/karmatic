@@ -38,6 +38,7 @@ describe("demo", () => {
   });
 
   it("should use the expect package instead of jasmine's expect", () => {
+    // The expect package has the toBeInstanceOf matcher, and jasmine doesn't
     expect([]).toBeInstanceOf(Array);
   });
 });

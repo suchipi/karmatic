@@ -4,7 +4,6 @@ import sade from "sade";
 import chalk from "chalk";
 import "./lib/patch";
 import karmatic from ".";
-import { cleanStack } from "./lib/util";
 
 const { version } = require("../package.json");
 
@@ -41,10 +40,7 @@ function run(str, opts, isWatch) {
     })
     .catch(err => {
       if (!(typeof err.code === "number" && err.code >= 0 && err.code < 10)) {
-        process.stderr.write(
-          chalk.red(cleanStack((err && (err.stack || err.message)) || err)) +
-            "\n"
-        );
+        process.stderr.write(chalk.red((err.stack || err.message) + "\n"));
       }
       process.exit(err.code || 1);
     });
