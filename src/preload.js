@@ -636,16 +636,22 @@ const resolve = (function() {
 // resolve package end
 /* eslint-enable */
 
-const makeModuleEnv = require(resolve.sync("make-module-env", {
-  basedir: __dirname
-}));
+const requireNonBuiltin = source =>
+  require(resolve.sync(source, { basedir: __dirname }));
 
-const env = makeModuleEnv(
+const makeModuleEnv = requireNonBuiltin("make-module-env");
+const expect = requireNonBuiltin("expect");
+
+const electron = makeModuleEnv(
   path.join(
     process.cwd(),
     "this-file-is-fake-and-is-used-by-karmatic-nightmare-to-give-you-local-require.js"
   )
 );
 
-window.electron = env;
-window.parent.electron = env;
+[window, window.parent].filter(Boolean).forEach(win => {
+  Object.assign(win, {
+    electron,
+    expect
+  });
+});

@@ -36,4 +36,8 @@ describe("demo", () => {
   it("should support a test setup file", () => {
     expect(window.testSetupRan).toBe(true);
   });
+
+  it("should use the expect package instead of jasmine's expect", () => {
+    expect([]).toBeInstanceOf(Array);
+  });
 });
