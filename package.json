@@ -7,7 +7,7 @@
   "bin": "dist/cli.js",
   "scripts": {
     "build": "microbundle --target node --external all -f cjs --no-compress src/*.js",
-    "test:build": "node ./dist/cli.js run",
+    "test:build": "node ./dist/cli.js run --test-setup-script ./test/test-setup.js",
     "test": "npm run -s build && npm run -s test:build",
     "release": "npm run -s prepare && npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish"
   },

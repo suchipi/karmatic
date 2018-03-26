@@ -32,4 +32,8 @@ describe("demo", () => {
     const fixture = electron.require("./test/fixture");
     expect(fixture).toBe("fixture");
   });
+
+  it("should support a test setup file", () => {
+    expect(window.testSetupRan).toBe(true);
+  });
 });

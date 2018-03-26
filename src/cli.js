@@ -16,7 +16,8 @@ prog
   .version(version)
   .option("--files", "Minimatch pattern for test files")
   .option("--headless", "Hide Electron window", true)
-  .option("--dev-tools", "Open dev tools on launch", false);
+  .option("--dev-tools", "Open dev tools on launch", false)
+  .option("--test-setup-script", "Script to run before executing all tests");
 
 prog
   .command("run [...files]", "", { default: true })

@@ -10,7 +10,6 @@ import {
 } from "./lib/util";
 import babelLoader from "./lib/babel-loader";
 import cssLoader from "./lib/css-loader";
-import webpack from "webpack";
 
 export default function configure(options) {
   let cwd = process.cwd(),
@@ -150,24 +149,34 @@ export default function configure(options) {
         watched: false,
         included: true,
         served: true
-      }
-    ].concat(
-      ...files.map(pattern => {
-        // Expand '**/xx' patterns but exempt node_modules and gitignored directories
-        let matches = pattern.match(/^\*\*\/(.+)$/);
-        if (!matches)
-          return { pattern, watched: true, served: true, included: true };
-        return [
-          {
-            pattern: rootFiles + "/" + matches[0],
+      },
+      options["test-setup-script"]
+        ? {
+            pattern: path.resolve(process.cwd(), options["test-setup-script"]),
             watched: true,
-            served: true,
-            included: true
-          },
-          { pattern: matches[1], watched: true, served: true, included: true }
-        ];
-      })
-    ),
+            included: true,
+            served: true
+          }
+        : null
+    ]
+      .filter(Boolean)
+      .concat(
+        ...files.map(pattern => {
+          // Expand '**/xx' patterns but exempt node_modules and gitignored directories
+          let matches = pattern.match(/^\*\*\/(.+)$/);
+          if (!matches)
+            return { pattern, watched: true, served: true, included: true };
+          return [
+            {
+              pattern: rootFiles + "/" + matches[0],
+              watched: true,
+              served: true,
+              included: true
+            },
+            { pattern: matches[1], watched: true, served: true, included: true }
+          ];
+        })
+      ),
 
     preprocessors: {
       [rootFiles + "/**/*"]: ["webpack"],
@@ -206,22 +215,12 @@ export default function configure(options) {
           src: res("src")
         })
       }),
-      plugins: (webpackConfig.plugins || [])
-        .filter(plugin => {
-          let name = plugin && plugin.constructor.name;
-          return /^\s*(UglifyJS|HTML|ExtractText|BabelMinify)(.*Webpack)?Plugin\s*$/gi.test(
-            name
-          );
-        })
-        .concat([
-          new webpack.ProvidePlugin({
-            electronRequire: "karmatic-nightmare/dist/electronRequire.js",
-            "window.electronRequire":
-              "karmatic-nightmare/dist/electronRequire.js",
-            "global.electronRequire":
-              "karmatic-nightmare/dist/electronRequire.js"
-          })
-        ])
+      plugins: (webpackConfig.plugins || []).filter(plugin => {
+        let name = plugin && plugin.constructor.name;
+        return /^\s*(UglifyJS|HTML|ExtractText|BabelMinify)(.*Webpack)?Plugin\s*$/gi.test(
+          name
+        );
+      })
     },
 
     nightmareOptions: {
