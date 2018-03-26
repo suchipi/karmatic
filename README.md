@@ -11,3 +11,4 @@ Options and usage more-or-less match karmatic; see its repo for more info.
 * You can use `electron.require` in your tests to require using electron (normal `require`s are compiled using Webpack)
 * You can use the `--dev-tools` CLI option to open Electron's Dev Tools UI
 * You can use the `--test-setup-script` CLI option to define a test setup file that runs before all tests run (eg `--test-setup-script ./src/test-setup.js`)
+* Has a fancy jest-style reporter
