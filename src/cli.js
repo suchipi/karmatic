@@ -2,7 +2,6 @@
 
 import sade from "sade";
 import chalk from "chalk";
-import "./lib/patch";
 import karmatic from ".";
 
 const { version } = require("../package.json");

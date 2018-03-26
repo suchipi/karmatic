@@ -25,7 +25,8 @@ export default function configure(options) {
     "karma-jasmine",
     "karma-spec-reporter",
     "karma-sourcemap-loader",
-    "karma-webpack"
+    "karma-webpack",
+    "./lib/jest-style-reporter"
   ];
 
   const WEBPACK_CONFIGS = ["webpack.config.babel.js", "webpack.config.js"];
@@ -108,7 +109,7 @@ export default function configure(options) {
     basePath: cwd,
     plugins: PLUGINS.map(require.resolve),
     frameworks: ["jasmine"],
-    reporters: ["spec"],
+    reporters: ["jest-style"],
     browsers: ["Nightmare"],
 
     logLevel: "ERROR",
