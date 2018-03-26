@@ -6,30 +6,43 @@
   "module": "dist/index.m.js",
   "bin": "dist/cli.js",
   "scripts": {
-    "prepare": "npm t",
     "build": "microbundle --target node --external all -f cjs --no-compress src/*.js",
     "test:build": "node ./dist/cli.js run",
-    "test": "eslint src test && npm run -s build && npm run -s test:build",
+    "test": "npm run -s build && npm run -s test:build",
     "release": "npm run -s prepare && npm test && git commit -am $npm_package_version && git tag $npm_package_version && git push && git push --tags && npm publish"
   },
   "eslintConfig": {
-    "extends": "eslint-config-developit"
+    "extends": [
+      "unobtrusive",
+      "unobtrusive/import"
+    ],
+    "env": {
+      "es6": true,
+      "node": true,
+      "browser": true,
+      "jasmine": true
+    },
+    "parser": "babel-eslint"
   },
   "keywords": [
     "karma",
-    "chrome",
+    "electron",
     "test runner"
   ],
   "author": "Suchipi <me@suchipi.com>",
   "repository": "suchipi/karmatic-nightmare",
   "license": "MIT",
   "devDependencies": {
+    "babel-eslint": "^8.2.2",
     "eslint": "^4.16.0",
-    "eslint-config-developit": "^1.1.1",
+    "eslint-config-unobtrusive": "^1.2.2",
+    "eslint-plugin-import": "^2.9.0",
     "microbundle": "^0.4.3",
+    "prettier": "^1.11.1",
     "workerize-loader": "^1.0.1"
   },
   "dependencies": {
+    "@suchipi/karma-nightmare": "0.4.15",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
@@ -42,7 +55,6 @@
     "jasmine-core": "^2.9.1",
     "karma": "^2.0.0",
     "karma-jasmine": "^1.1.1",
-    "@suchipi/karma-nightmare": "0.4.15",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-spec-reporter": "0.0.32",
     "karma-webpack": "2.0.7",

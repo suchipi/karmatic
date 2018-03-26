@@ -1,1 +1,1 @@
-module.exports = 'fixture';
+module.exports = "fixture";
