@@ -24,19 +24,12 @@ describe('demo', () => {
 		expect(await mod.foo()).toEqual(1);
 	});
 
-	it('should support electron require (window.electronRequire)', () => {
-		const Module = window.electronRequire('module');
+	it('should support electron require', () => {
+		/* global electron */
+		const Module = electron.require('module');
 		expect(Array.isArray(Module.globalPaths)).toBe(true);
-	});
 
-	it('should support electron require (global.electronRequire)', () => {
-		const Module = global.electronRequire('module');
-		expect(Array.isArray(Module.globalPaths)).toBe(true);
-	});
-
-	it('should support electron require (bare electronRequire identifier)', () => {
-		/* global electronRequire */
-		const Module = electronRequire('module');
-		expect(Array.isArray(Module.globalPaths)).toBe(true);
+		const fixture = electron.require('./test/fixture');
+		expect(fixture).toBe('fixture');
 	});
 });

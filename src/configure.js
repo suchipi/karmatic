@@ -17,7 +17,7 @@ export default function configure(options) {
 	let rootFiles = '{' + repoRoot.join(',') + '}';
 
 	const PLUGINS = [
-		'karma-nightmare',
+		'@suchipi/karma-nightmare',
 		'karma-jasmine',
 		'karma-spec-reporter',
 		'karma-sourcemap-loader',
@@ -119,7 +119,8 @@ export default function configure(options) {
 		}],
 
 		files: [
-			{ pattern: moduleDir('babel-polyfill')+'/dist/polyfill.js', watched: false, included: true, served: true }
+			{ pattern: moduleDir('babel-polyfill')+'/dist/polyfill.js', watched: false, included: true, served: true },
+			{ pattern: require.resolve('karmatic-nightmare').replace(/\/index.js$/, '/preload.js'), watched: false, included: true, served: true }
 		].concat( ...files.map( pattern => {
 			// Expand '**/xx' patterns but exempt node_modules and gitignored directories
 			let matches = pattern.match(/^\*\*\/(.+)$/);
@@ -177,7 +178,12 @@ export default function configure(options) {
 
 		nightmareOptions: {
 			show: options['dev-tools'] || !options.headless,
-			openDevTools: options['dev-tools']
+			openDevTools: options['dev-tools'],
+			dock: options['dev-tools'] || !options.headless,
+			alwaysOnTop: false,
+			webPreferences: {
+				nodeIntegration: true
+			}
 		},
 
 		webpackMiddleware: {

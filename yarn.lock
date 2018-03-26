@@ -78,6 +78,12 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
+"@suchipi/karma-nightmare@0.4.15":
+  version "0.4.15"
+  resolved "https://registry.yarnpkg.com/@suchipi/karma-nightmare/-/karma-nightmare-0.4.15.tgz#750448997cdf6df2a6963250fc5b64322b6d37a5"
+  dependencies:
+    nightmare "^2.10.0"
+
 "@types/node@^8.0.24":
   version "8.10.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.10.0.tgz#f5d649cc49af8ed6507d15dc6e9b43fe8b927540"
@@ -3992,13 +3998,6 @@ karma-jasmine@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/karma-jasmine/-/karma-jasmine-1.1.1.tgz#6fe840e75a11600c9d91e84b33c458e1c46a3529"
 
-karma-nightmare@^0.4.14:
-  version "0.4.14"
-  resolved "https://registry.yarnpkg.com/karma-nightmare/-/karma-nightmare-0.4.14.tgz#6bc72f506dba4395c69ae90af394a41b9158564d"
-  dependencies:
-    make-dir "^1.0.0"
-    nightmare "^2.10.0"
-
 karma-sourcemap-loader@^0.3.7:
   version "0.3.7"
   resolved "https://registry.yarnpkg.com/karma-sourcemap-loader/-/karma-sourcemap-loader-0.3.7.tgz#91322c77f8f13d46fed062b042e1009d4c4505d8"
@@ -4301,6 +4300,10 @@ make-dir@^1.0.0:
   resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-1.2.0.tgz#6d6a49eead4aae296c53bbf3a1a008bd6c89469b"
   dependencies:
     pify "^3.0.0"
+
+make-module-env@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/make-module-env/-/make-module-env-1.0.1.tgz#00657144371d05d265556fa4d847cb1f4d39fe60"
 
 map-cache@^0.2.2:
   version "0.2.2"
