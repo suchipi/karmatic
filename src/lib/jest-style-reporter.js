@@ -69,8 +69,8 @@ function summarizeFailingResult(result) {
   );
 
   if (result.log.length > 0) {
-    const errorMessage = formatError(result.log.join("\n"));
-    console.log(indent(errorMessage, 2) + "\n");
+    const errorMessage = formatError(result.log.join(""));
+    console.log(indent(errorMessage, 1) + "\n");
   }
 }
 
@@ -149,15 +149,12 @@ function Reporter(config) {
       set(resultTree, [...result.suite, result.description], result);
     });
     printResultTree(resultTree);
-    if (results.length > 0) {
+    if (specResults.length > 0) {
       process.stdout.write("\n");
     }
 
     const failing = specResults.filter(result => !result.success);
-    if (failing.length > 0) {
-      failing.forEach(summarizeFailingResult);
-      process.stdout.write("\n");
-    }
+    failing.forEach(summarizeFailingResult);
 
     logMessages.forEach(message => console.log(message + "\n"));
 
