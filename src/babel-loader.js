@@ -9,21 +9,15 @@ export default function babelLoader(options) {
           require.resolve("babel-preset-env"),
           {
             targets: {
-              browsers: "last 2 Chrome versions"
+              // Our current electron version is Chrome 59.
+              browsers: "Chrome >= 59"
             },
-            modules: false,
-            loose: true
+            modules: false
           }
         ],
         require.resolve("babel-preset-stage-0")
       ],
-      plugins: [
-        [require.resolve("babel-plugin-transform-object-rest-spread")],
-        [
-          require.resolve("babel-plugin-transform-react-jsx"),
-          { pragma: options.pragma || "h" }
-        ]
-      ]
+      plugins: [[require.resolve("babel-plugin-transform-react-jsx")]]
     }
   };
 }
