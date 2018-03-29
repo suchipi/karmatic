@@ -1,10 +1,6 @@
 const path = require("path");
 
-function aliasPath(aliasName) {
-  return path.resolve(__dirname, "builtin-aliases", aliasName + ".js");
-}
-
-export default function builtinAliases(webpackAliases) {
+export default function builtinAliases() {
   const builtinLibs = [
     "assert",
     "async_hooks",
@@ -39,11 +35,12 @@ export default function builtinAliases(webpackAliases) {
     "zlib"
   ];
 
-  return Object.assign(
-    builtinLibs.reduce((obj, aliasName) => {
-      obj[aliasName] = aliasPath(aliasName);
-      return obj;
-    }, {}),
-    webpackAliases
-  );
+  return builtinLibs.reduce((obj, aliasName) => {
+    obj[aliasName] = path.resolve(
+      __dirname,
+      "builtin-aliases",
+      aliasName + ".js"
+    );
+    return obj;
+  }, {});
 }

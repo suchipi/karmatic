@@ -17,7 +17,7 @@ export default function babelLoader(options) {
         ],
         require.resolve("babel-preset-stage-0")
       ],
-      plugins: [[require.resolve("babel-plugin-transform-react-jsx")]]
+      plugins: [require.resolve("babel-plugin-transform-react-jsx")]
     }
   };
 }

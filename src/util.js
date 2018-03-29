@@ -30,7 +30,3 @@ export function readDir(file) {
 export function tryRequire(file) {
   if (fileExists(file)) return require(file);
 }
-
-export function dedupe(value, index, arr) {
-  return arr.indexOf(value) === index;
-}

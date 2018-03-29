@@ -1,30 +1,28 @@
 import path from "path";
 import delve from "dlv";
-import { tryRequire, dedupe } from "./util";
+import { tryRequire } from "./util";
 import babelLoader from "./babel-loader";
 import cssLoader from "./css-loader";
 import builtinAliases from "./builtin-aliases";
 
-export default function createWebpackConfig(options) {
-  let cwd = process.cwd(),
-    res = file => path.resolve(cwd, file);
+function dedupeArray(arr) {
+  return arr.filter((value, index) => arr.indexOf(value) === index);
+}
 
-  let files = options.files.filter(Boolean);
-  if (!files.length) files = ["**/{*.test.js,*_test.js}"];
-
+function getExistingWebpackConfig(options) {
   const WEBPACK_CONFIGS = ["webpack.config.babel.js", "webpack.config.js"];
-  let webpackConfig = options.webpackConfig;
+  let webpackConfig = options.webpackConfig; // Node API option
 
-  let pkg = tryRequire(res("package.json"));
+  let packageJson = tryRequire(path.resolve(process.cwd(), "package.json"));
 
-  if (pkg.scripts) {
-    for (let i in pkg.scripts) {
-      let script = pkg.scripts[i];
-      if (/\bwebpack\b[^&|]*(-c|--config)\b/.test(script)) {
-        let matches = script.match(
+  if (packageJson.scripts) {
+    for (let i in packageJson.scripts) {
+      const script = packageJson.scripts[i];
+      if (/\bwebpack\b[^&|;]*(-c|--config)\b/.test(script)) {
+        const matches = script.match(
           /(?:-c|--config)\s+(?:([^\s])|(["'])(.*?)\2)/
         );
-        let configFile = matches && (matches[1] || matches[2]);
+        const configFile = matches && (matches[1] || matches[2]);
         if (configFile) WEBPACK_CONFIGS.push(configFile);
       }
     }
@@ -32,14 +30,25 @@ export default function createWebpackConfig(options) {
 
   if (!webpackConfig) {
     for (let i = WEBPACK_CONFIGS.length; i--; ) {
-      webpackConfig = tryRequire(res(WEBPACK_CONFIGS[i]));
+      webpackConfig = tryRequire(
+        path.resolve(process.cwd(), WEBPACK_CONFIGS[i])
+      );
       if (webpackConfig) break;
     }
   }
 
-  webpackConfig = webpackConfig || {};
+  return webpackConfig || {};
+}
 
-  let loaders = [].concat(
+export default function createWebpackConfig(options) {
+  let files = options.files.filter(Boolean);
+  if (!files.length) {
+    files = ["**/{*.test.js,*_test.js}"];
+  }
+
+  const webpackConfig = getExistingWebpackConfig(options);
+
+  const loaders = [].concat(
     delve(webpackConfig, "module.loaders") || [],
     delve(webpackConfig, "module.rules") || []
   );
@@ -76,15 +85,18 @@ export default function createWebpackConfig(options) {
         return { index: i, loader: loaders[i] };
       }
     }
-    return false;
+    return null;
   }
 
   function webpackProp(name, value) {
     const configured = delve(webpackConfig, name);
     if (Array.isArray(value)) {
-      return value.concat(configured || []).filter(dedupe);
+      return dedupeArray(value.concat(configured || []));
+    } else if (value != null) {
+      return Object.assign({}, configured || {}, value);
+    } else {
+      return configured;
     }
-    return Object.assign({}, configured || {}, value);
   }
 
   return {
@@ -92,10 +104,12 @@ export default function createWebpackConfig(options) {
     module: {
       loaders: loaders
         .concat(
-          !getLoader(rule =>
+          getLoader(rule =>
             `${rule.use},${rule.loader}`.match(/\bbabel-loader\b/)
-          ) && babelLoader(options),
-          !getLoader("foo.css") && cssLoader(options)
+          )
+            ? null
+            : babelLoader(options),
+          getLoader("foo.css") ? null : cssLoader(options)
         )
         .filter(Boolean)
     },
@@ -104,25 +118,16 @@ export default function createWebpackConfig(options) {
         "node_modules",
         path.resolve(__dirname, "../node_modules")
       ]),
-      alias: builtinAliases(
-        webpackProp("resolve.alias", {
-          [pkg.name]: res("."),
-          src: res("src")
-        })
-      )
+      alias: Object.assign(builtinAliases(), webpackProp("resolve.alias"))
     }),
     resolveLoader: webpackProp("resolveLoader", {
       modules: webpackProp("resolveLoader.modules", [
         "node_modules",
         path.resolve(__dirname, "../node_modules")
-      ]),
-      alias: webpackProp("resolveLoader.alias", {
-        [pkg.name]: res("."),
-        src: res("src")
-      })
+      ])
     }),
     plugins: (webpackConfig.plugins || []).filter(plugin => {
-      let name = plugin && plugin.constructor.name;
+      const name = plugin.constructor.name;
       return /^\s*(UglifyJS|HTML|ExtractText|BabelMinify)(.*Webpack)?Plugin\s*$/gi.test(
         name
       );
