@@ -1,9 +1,9 @@
 import path from "path";
 import delve from "dlv";
-import { moduleDir, tryRequire, dedupe, readFile, readDir } from "./lib/util";
-import babelLoader from "./lib/babel-loader";
-import cssLoader from "./lib/css-loader";
-import builtinAliases from "./lib/builtin-aliases";
+import { moduleDir, tryRequire, dedupe, readFile, readDir } from "./util";
+import babelLoader from "./babel-loader";
+import cssLoader from "./css-loader";
+import builtinAliases from "./builtin-aliases";
 
 export default function configure(options) {
   let cwd = process.cwd(),
@@ -27,7 +27,7 @@ export default function configure(options) {
     "karma-spec-reporter",
     "karma-sourcemap-loader",
     "karma-webpack",
-    "./lib/jest-style-reporter"
+    "./jest-style-reporter"
   ];
 
   const WEBPACK_CONFIGS = ["webpack.config.babel.js", "webpack.config.js"];
