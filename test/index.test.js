@@ -17,7 +17,7 @@ describe("demo", () => {
     expect(now - start).toBeGreaterThan(50);
   });
 
-  it("should do MAGIC", async () => {
+  it("should support using loaders from the current project", async () => {
     let lib = await import("workerize-loader!./fixture.worker.js");
     expect(lib).toEqual(jasmine.any(Function));
     let mod = lib();

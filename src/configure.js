@@ -3,6 +3,7 @@ import delve from "dlv";
 import { moduleDir, tryRequire, dedupe, readFile, readDir } from "./lib/util";
 import babelLoader from "./lib/babel-loader";
 import cssLoader from "./lib/css-loader";
+import builtinAliases from "./lib/builtin-aliases";
 
 export default function configure(options) {
   let cwd = process.cwd(),
@@ -98,7 +99,7 @@ export default function configure(options) {
   }
 
   function webpackProp(name, value) {
-    let configured = delve(webpackConfig, "resolve.alias");
+    const configured = delve(webpackConfig, name);
     if (Array.isArray(value)) {
       return value.concat(configured || []).filter(dedupe);
     }
@@ -181,10 +182,12 @@ export default function configure(options) {
           "node_modules",
           path.resolve(__dirname, "../node_modules")
         ]),
-        alias: webpackProp("resolve.alias", {
-          [pkg.name]: res("."),
-          src: res("src")
-        })
+        alias: builtinAliases(
+          webpackProp("resolve.alias", {
+            [pkg.name]: res("."),
+            src: res("src")
+          })
+        )
       }),
       resolveLoader: webpackProp("resolveLoader", {
         modules: webpackProp("resolveLoader.modules", [
